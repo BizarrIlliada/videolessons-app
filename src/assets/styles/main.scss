@@ -1,0 +1,31 @@
+@import './variables';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #a4f38c;
+  height: $header-height;
+}
+
+main {
+  min-height: calc(100vh - ($header-height + $footer-height));
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  height: $footer-height;
+}

@@ -1,14 +1,35 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <ElContainer>
+    <ElHeader>
+      <h1>
+        Header content
+      </h1>
+    </ElHeader>
+    <ElMain>
+      <router-view/>
+    </ElMain>
+    <ElFooter>© Footer content, 2023</ElFooter>
+  </ElContainer>
 </template>
+
+<script lang="ts">
+  import { defineComponent } from 'vue';
+
+  import { ElContainer, ElHeader, ElMain, ElFooter } from 'element-plus';
+
+  export default defineComponent({
+    name: 'App',
+    components: {
+      ElContainer,
+      ElHeader,
+      ElMain,
+      ElFooter,
+    },
+  })
+</script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
