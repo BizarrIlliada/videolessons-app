@@ -6,7 +6,9 @@
       </h1>
     </ElHeader>
     <ElMain>
-      <router-view/>
+      <ElCard>
+        <router-view/>
+      </ElCard>
     </ElMain>
     <ElFooter>© Footer content, 2023</ElFooter>
   </ElContainer>

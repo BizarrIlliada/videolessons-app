@@ -5,7 +5,6 @@ export async function loadLessons() {
 
   try {
     const responseData = (await apiClient.get('/lessons.json')).data;
-    console.log('Data: ', responseData);
 
     for (const key in responseData) {
       lessons.push({

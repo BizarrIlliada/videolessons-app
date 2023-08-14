@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { Lesson } from '@/types/global-types';
-import { loadLessons } from '../api/users-requests';
+import { loadLessons } from '../api/lessons-requests';
 
 interface State {
   lessons: Lesson[],

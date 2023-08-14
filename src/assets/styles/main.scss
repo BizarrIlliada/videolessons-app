@@ -13,12 +13,16 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #a4f38c;
+  background-color: #409eff;
+  color: #fff;
   height: $header-height;
 }
 
 main {
   min-height: calc(100vh - ($header-height + $footer-height));
+  max-width: 1240px;
+  min-width: 600px;
+  align-self: center;
 }
 
 footer {
