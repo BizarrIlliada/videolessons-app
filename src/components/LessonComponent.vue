@@ -2,7 +2,9 @@
   <ElCard>
     <h2>{{ currentLesson.title }}</h2>
     <h3>{{ currentLesson.subtitle }}</h3>
-    <iframe src="" frameborder="0"></iframe>
+    <YouTubeVideoComponent
+      :videoUrl="currentLesson.video_url"
+    />
     <p>{{ currentLesson.description }}</p>
   </ElCard>
 </template>
@@ -11,9 +13,13 @@
   import { defineComponent } from 'vue';
   import { mapGetters } from 'vuex';
   import { Lesson } from '@/types/global-types';
+  import YouTubeVideoComponent from './TouTubeVideoComponent.vue';
 
   export default defineComponent({
     name: 'LessonComponent',
+    components: {
+      YouTubeVideoComponent
+    },
     props: {
       lessonId: {
         type: String,
@@ -27,10 +33,14 @@
       }),
 
       currentLesson() {
-        const lesson = this.lessons.filter((el: Lesson) => el.id === this.lessonId)[0];
-
-        return lesson;
+        return this.lessons.filter((el: Lesson) => el.id === this.lessonId)[0];
       }
     }
   })
 </script>
+
+<style scoped>
+  h2, h3, p {
+    text-align: left;
+  }
+</style>
