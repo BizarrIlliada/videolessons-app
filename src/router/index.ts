@@ -15,11 +15,6 @@ const routes: Array<RouteRecordRaw> = [
     component: LessonsPage,
     children: [
       {
-        name: 'default-lesson',
-        path: '',
-        redirect: { name: 'lesson' }
-      },
-      {
         name: 'lesson',
         path: ':lessonId',
         props: true,

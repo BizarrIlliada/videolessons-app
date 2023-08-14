@@ -1,9 +1,9 @@
 <template>
-  <section v-if="lessons.length">
+  <section v-if="!isLoading">
     <ElTabs tab-position="right">
       <ElTabPane v-for="lesson in lessons" :key="lesson.id">
         <template #label>
-          <router-link :to="lesson.id">
+          <router-link :to="{ name: 'lesson', params: { lessonId: lesson.id } }">
             <ElButton size="large">
               {{ lesson.title }}
             </ElButton>
@@ -35,16 +35,25 @@
     },
 
     computed: {
-      ...mapGetters({ lessons: 'getLessons' }),
+      ...mapGetters(
+        {
+          lessons: 'getLessons',
+          firstLessonId: 'getFirstLessonId',
+        },
+      ),
     },
 
     methods: {
-      ...mapActions(['setLessons']),
+      ...mapActions(['setLessons', 'setFirstLessonId']),
     },
 
     async created() {
       this.isLoading = true;
       await this.setLessons();
+      this.setFirstLessonId();
+      this.$router.push({ name: 'lesson', params: { lessonId: this.firstLessonId } });
+      console.log(this.firstLessonId);
+      
       this.isLoading = false;
     },
   })
