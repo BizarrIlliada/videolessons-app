@@ -2,7 +2,8 @@
   <ElCard>
     <h2>{{ currentLesson.title }}</h2>
     <h3>{{ currentLesson.subtitle }}</h3>
-    <YouTubeVideoComponent
+    <VideoComponent
+      :key="currentLesson.video_url"
       :videoUrl="currentLesson.video_url"
     />
     <p>{{ currentLesson.description }}</p>
@@ -13,12 +14,12 @@
   import { defineComponent } from 'vue';
   import { mapGetters } from 'vuex';
   import { Lesson } from '@/types/global-types';
-  import YouTubeVideoComponent from './TouTubeVideoComponent.vue';
+  import VideoComponent from './VideoComponent.vue';
 
   export default defineComponent({
     name: 'LessonComponent',
     components: {
-      YouTubeVideoComponent
+      VideoComponent,
     },
     props: {
       lessonId: {
@@ -42,5 +43,9 @@
 <style scoped>
   h2, h3, p {
     text-align: left;
+  }
+
+  p {
+    font-size: 20px;
   }
 </style>

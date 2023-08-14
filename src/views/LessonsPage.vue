@@ -4,7 +4,7 @@
       <ElTabPane v-for="lesson in lessons" :key="lesson.id">
         <template #label>
           <router-link :to="lesson.id">
-            <ElButton :link="true">
+            <ElButton size="large">
               {{ lesson.title }}
             </ElButton>
           </router-link>
@@ -51,5 +51,7 @@
 </script>
 
 <style>
-  
+  button {
+    width: 100px;
+  }
 </style>
