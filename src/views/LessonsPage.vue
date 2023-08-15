@@ -1,10 +1,10 @@
 <template>
   <section v-if="!isLoading">
     <ElTabs tab-position="right">
-      <ElTabPane v-for="lesson in lessons" :key="lesson.id">
+      <ElTabPane v-for="lesson in lessons" :key="lesson.id" :disabled="!areLessonsAvailable[lesson.id]">
         <template #label>
           <router-link :to="{ name: 'lesson', params: { lessonId: lesson.id } }">
-            <ElButton size="large">
+            <ElButton :disabled="!areLessonsAvailable[lesson.id]" size="large">
               {{ lesson.title }}
             </ElButton>
           </router-link>
@@ -20,6 +20,10 @@
   import { mapGetters, mapActions } from 'vuex';
 
   import { ElTabs, ElTabPane } from 'element-plus';
+
+  interface LessonsAvailability {
+    [key: string]: boolean,
+  }
 
   export default defineComponent({
     name: 'LessonsPage',
@@ -38,23 +42,49 @@
       ...mapGetters(
         {
           lessons: 'getLessons',
-          firstLessonId: 'getFirstLessonId',
+          lessonsIdList: 'getLessonsIdList',
         },
       ),
+
+      areLessonsAvailable() {
+        const result: LessonsAvailability = {};
+
+        for (const lessonId of this.lessonsIdList) {
+          result[lessonId] = this.firstLessonId === lessonId;
+        }
+
+        return result;
+      },
+
+      firstLessonId() {
+        return this.lessonsIdList[0];
+      },
     },
 
     methods: {
-      ...mapActions(['setLessons', 'setFirstLessonId']),
+      ...mapActions(['setLessons', 'setLessonsIdList']),
     },
 
     async created() {
       this.isLoading = true;
+
       await this.setLessons();
-      this.setFirstLessonId();
+      this.setLessonsIdList();
       this.$router.push({ name: 'lesson', params: { lessonId: this.firstLessonId } });
-      console.log(this.firstLessonId);
       
       this.isLoading = false;
+    },
+
+    beforeRouteUpdate(to, from, next) {
+      let toLessonPath = '';
+
+      if (!Array.isArray(to.params.lessonId)) {
+        toLessonPath = to.params.lessonId;
+      }
+
+      if (this.areLessonsAvailable[toLessonPath]) {
+        next();
+      }
     },
   })
 </script>

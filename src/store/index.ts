@@ -4,14 +4,14 @@ import { loadLessons } from '../api/lessons-requests';
 
 interface State {
   lessons: Lesson[],
-  firstLessonId: string,
+  lessonsIdList: string[],
 }
 
 export default createStore<State>({
   state() {
     return {
       lessons: [] as Lesson[],
-      firstLessonId: '',
+      lessonsIdList: [],
     }
   },
 
@@ -20,9 +20,9 @@ export default createStore<State>({
       return state.lessons;
     },
 
-    getFirstLessonId(state) {
-      return state.firstLessonId;
-    }
+    getLessonsIdList(state) {
+      return state.lessonsIdList;
+    },
   },
 
   mutations: {
@@ -30,8 +30,8 @@ export default createStore<State>({
       state.lessons = payload;
     },
 
-    setFirstLessonId(state, payload: string) {
-      state.firstLessonId = payload;
+    setLessonsIdList(state, payload) {
+      state.lessonsIdList = payload;
     }
   },
 
@@ -42,10 +42,10 @@ export default createStore<State>({
       context.commit('setLessons', lessons);
     },
 
-    setFirstLessonId(context) {
-      const lessonId = context.getters.getLessons[0].id;
+    setLessonsIdList(context) {
+      const lessonsIdList = context.getters.getLessons.map((lesson: Lesson) => lesson.id)
 
-      context.commit('setFirstLessonId', lessonId);
+      context.commit('setLessonsIdList', lessonsIdList);
     }
   },
 })
