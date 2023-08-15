@@ -1,8 +1,7 @@
 <template>
   <div class="video-container">
     <video
-      @pause="console.log('Is stopped!')"
-      @play="console.log('Is playing!')"
+      @ended="onVideoEnd"
       controls
     >
       <source :src="videoUrl" type="video/mp4">
@@ -12,6 +11,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
+  import { mapGetters, mapActions } from 'vuex';
 
   export default defineComponent({
     name: 'YouTubeVideoComponent',
@@ -21,6 +21,26 @@
         required: true,
       }
     },
+
+    computed: {
+      ...mapGetters({
+        lessonsIdList: 'getLessonsIdList',
+      })
+    },
+
+    methods: {
+      onVideoEnd() {
+        const currentIndex = this.lessonsIdList.findIndex((el: string) => el === this.$route.params.lessonId);
+
+        if(currentIndex + 1 >= this.lessonsIdList.length) {
+          return;
+        }
+
+        this.setAvailableLessons(this.lessonsIdList[currentIndex + 1])
+      },
+
+      ...mapActions(['setAvailableLessons']),
+    }
   })
 </script>
 

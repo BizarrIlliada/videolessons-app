@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 import LessonsPage from '../views/LessonsPage.vue';
+import NotFoundPage from '../views/NotFoundPage.vue';
 import LessonComponent from '../components/LessonComponent.vue';
 
 const routes: Array<RouteRecordRaw> = [
@@ -19,9 +20,10 @@ const routes: Array<RouteRecordRaw> = [
         path: ':lessonId',
         props: true,
         component: LessonComponent,
-      }
+      },
     ],
-  }
+  },
+  { path: '/:anything(.*)', component: NotFoundPage },
 ]
 
 const router = createRouter({

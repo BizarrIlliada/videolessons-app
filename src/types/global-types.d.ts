@@ -6,3 +6,5 @@ export interface Lesson {
   video_url: string,
   id?: string,
 }
+
+export interface AvailableLessons { [key: string]: boolean }

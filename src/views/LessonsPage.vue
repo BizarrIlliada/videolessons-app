@@ -1,16 +1,16 @@
 <template>
   <section v-if="!isLoading">
     <ElTabs tab-position="right">
-      <ElTabPane v-for="lesson in lessons" :key="lesson.id" :disabled="!areLessonsAvailable[lesson.id]">
+      <ElTabPane v-for="lesson in lessons" :key="lesson.id" :disabled="!availableLessons[lesson.id]">
         <template #label>
           <router-link :to="{ name: 'lesson', params: { lessonId: lesson.id } }">
-            <ElButton :disabled="!areLessonsAvailable[lesson.id]" size="large">
+            <ElButton :disabled="!availableLessons[lesson.id]" size="large">
               {{ lesson.title }}
             </ElButton>
           </router-link>
         </template>
       </ElTabPane>
-      <router-view></router-view>
+      <router-view v-if="lessonsIdList.includes($route.params.lessonId)"></router-view>
     </ElTabs>
   </section>
 </template>
@@ -21,9 +21,7 @@
 
   import { ElTabs, ElTabPane } from 'element-plus';
 
-  interface LessonsAvailability {
-    [key: string]: boolean,
-  }
+  import { AvailableLessons } from '@/types/global-types';
 
   export default defineComponent({
     name: 'LessonsPage',
@@ -43,26 +41,24 @@
         {
           lessons: 'getLessons',
           lessonsIdList: 'getLessonsIdList',
+          availableLessons: 'getAvailableLessons',
+          firstLessonId: 'getFirstLessonId',
         },
       ),
-
-      areLessonsAvailable() {
-        const result: LessonsAvailability = {};
-
-        for (const lessonId of this.lessonsIdList) {
-          result[lessonId] = this.firstLessonId === lessonId;
-        }
-
-        return result;
-      },
-
-      firstLessonId() {
-        return this.lessonsIdList[0];
-      },
     },
 
     methods: {
-      ...mapActions(['setLessons', 'setLessonsIdList']),
+      ...mapActions(['setLessons', 'setLessonsIdList', 'setAvailableLessons']),
+
+      initAvailableLessons() {
+        const availableLessons: AvailableLessons = {};
+
+        for (const lessonId of this.lessonsIdList) {
+          availableLessons[lessonId] = lessonId === this.firstLessonId;
+        }
+
+        this.setAvailableLessons(availableLessons);
+      },
     },
 
     async created() {
@@ -70,8 +66,9 @@
 
       await this.setLessons();
       this.setLessonsIdList();
+      this.initAvailableLessons();
+
       this.$router.push({ name: 'lesson', params: { lessonId: this.firstLessonId } });
-      
       this.isLoading = false;
     },
 
@@ -82,7 +79,7 @@
         toLessonPath = to.params.lessonId;
       }
 
-      if (this.areLessonsAvailable[toLessonPath]) {
+      if (this.availableLessons[toLessonPath]) {
         next();
       }
     },
