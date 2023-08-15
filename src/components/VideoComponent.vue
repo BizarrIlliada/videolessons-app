@@ -13,6 +13,8 @@
   import { defineComponent } from 'vue';
   import { mapGetters, mapActions } from 'vuex';
 
+  import { ElNotification } from 'element-plus';
+
   export default defineComponent({
     name: 'YouTubeVideoComponent',
     props: {
@@ -36,7 +38,12 @@
           return;
         }
 
-        this.setAvailableLessons(this.lessonsIdList[currentIndex + 1])
+        this.setAvailableLessons(this.lessonsIdList[currentIndex + 1]);
+        ElNotification({
+            title: 'Congratulations!!!',
+            message: 'Next lesson is available!',
+            type: 'success',
+          })
       },
 
       ...mapActions(['setAvailableLessons']),
